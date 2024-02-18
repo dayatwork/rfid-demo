@@ -4,11 +4,11 @@ import { emitter } from "../../utils/sse/emitter.server";
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method === "POST") {
+    const body = await request.json();
     try {
-      const formData = await request.formData();
-      const deviceId = formData.get("deviceId") as string;
-      const rfidReaderId = formData.get("readerId") as string;
-      const dateTimeString = formData.get("dateTime");
+      const deviceId = body.deviceId;
+      const rfidReaderId = body.readerId;
+      const dateTimeString = body.dateTime;
       const dateTime =
         dateTimeString && typeof dateTimeString === "string"
           ? new Date(dateTimeString)
