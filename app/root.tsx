@@ -5,6 +5,8 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import "./tailwind.css";
+import { Toaster } from "./components/ui/sonner";
 
 export default function App() {
   return (
@@ -17,6 +19,7 @@ export default function App() {
       </head>
       <body>
         <Outlet />
+        <Toaster />
         <ScrollRestoration />
         <Scripts />
       </body>

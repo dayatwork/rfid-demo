@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model RfidReader {
+  id             String           @id
+  name           String
+  description    String?
+  deviceLocation DeviceLocation[]
+}
+
+model Device {
+  id          String          @id @default(cuid())
+  tagId       String          @unique
+  name        String
+  photo       String?
+  description String?
+  location    DeviceLocation?
+}
+
+model DeviceLocation {
+  device       Device     @relation(fields: [deviceId], references: [id])
+  deviceId     String     @unique
+  rfidReader   RfidReader @relation(fields: [rfidReaderId], references: [id])
+  rfidReaderId String
+  dateTime     DateTime   @default(now())
+}
