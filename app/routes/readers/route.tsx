@@ -138,13 +138,13 @@ export default function Readers() {
               ))}
             </SelectContent>
           </Select>
-          <Select name="deviceId" required>
+          <Select name="tagId" required>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select a device" />
             </SelectTrigger>
             <SelectContent>
               {devices.map((device) => (
-                <SelectItem key={device.id} value={device.id}>
+                <SelectItem key={device.id} value={device.tagId}>
                   {device.name}
                 </SelectItem>
               ))}
@@ -156,6 +156,9 @@ export default function Readers() {
           </Button>
         </fetcher.Form>
       </div>
+      <Link to="/" className="inline-flex mb-4 hover:underline">
+        &larr; Back to home
+      </Link>
       <div className="flex gap-10 items-start">
         <div className="w-[300px]">
           <div className="flex justify-between items-center mb-4">
@@ -198,6 +201,11 @@ export default function Readers() {
               </DialogContent>
             </Dialog>
           </div>
+          {readers.length === 0 && (
+            <div className="border border-dashed rounded-xl flex items-center justify-center h-32">
+              <p className="text-sm font-semibold text-slate-600">No readers</p>
+            </div>
+          )}
           <ul className="flex flex-col gap-4">
             {readers.map((reader) => (
               <li key={reader.id} className="group relative">

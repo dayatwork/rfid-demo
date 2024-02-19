@@ -4,18 +4,28 @@ import { emitter } from "../../utils/sse/emitter.server";
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method === "POST") {
-    const body = await request.json();
     try {
-      const deviceId = body.deviceId;
+      const body = await request.json();
+      const tagId = body.tagId;
       const rfidReaderId = body.readerId;
       const dateTimeString = body.dateTime;
       const dateTime =
         dateTimeString && typeof dateTimeString === "string"
           ? new Date(dateTimeString)
           : new Date();
+      const device = await prisma.device.findUnique({ where: { tagId } });
+      if (!device) {
+        return json(
+          {
+            success: false,
+            message: `Device with tag ${tagId} not registered`,
+          },
+          { status: 404 }
+        );
+      }
       await prisma.deviceLocation.upsert({
-        where: { deviceId },
-        create: { dateTime, deviceId, rfidReaderId },
+        where: { deviceId: device.id },
+        create: { dateTime, deviceId: device.id, rfidReaderId },
         update: { rfidReaderId, dateTime },
       });
       emitter.emit(`position-changed`);

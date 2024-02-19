@@ -6,16 +6,26 @@ export async function action({ request }: ActionFunctionArgs) {
   if (request.method === "POST") {
     try {
       const formData = await request.formData();
-      const deviceId = formData.get("deviceId") as string;
+      const tagId = formData.get("tagId") as string;
       const rfidReaderId = formData.get("readerId") as string;
       const dateTimeString = formData.get("dateTime");
       const dateTime =
         dateTimeString && typeof dateTimeString === "string"
           ? new Date(dateTimeString)
           : new Date();
+      const device = await prisma.device.findUnique({ where: { tagId } });
+      if (!device) {
+        return json(
+          {
+            success: false,
+            message: `Device with tag ${tagId} not registered`,
+          },
+          { status: 404 }
+        );
+      }
       await prisma.deviceLocation.upsert({
-        where: { deviceId },
-        create: { dateTime, deviceId, rfidReaderId },
+        where: { deviceId: device.id },
+        create: { dateTime, deviceId: device.id, rfidReaderId },
         update: { rfidReaderId, dateTime },
       });
       emitter.emit(`position-changed`);

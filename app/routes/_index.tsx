@@ -27,7 +27,7 @@ export default function Index() {
           className="border w-40 h-40 rounded-xl hover:bg-accent flex flex-col items-center justify-center gap-2"
         >
           <img src={tagImage} alt="tag" className="w-12" />
-          <span className="font-semibold">Device</span>
+          <span className="font-semibold">Devices</span>
         </Link>
       </div>
     </div>

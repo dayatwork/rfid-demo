@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for rfid-demo on 2024-02-18T23:09:46+07:00
+# fly.toml app configuration file generated for simata-rfid-demo on 2024-02-18T23:55:50+07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'rfid-demo'
+app = 'simata-rfid-demo'
 primary_region = 'sin'
 
 [build]
